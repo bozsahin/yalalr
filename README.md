@@ -1,7 +1,7 @@
 # yalalr
 yet another LALR parser generator interface
 
-This is going to be an interface to Mark Johnson's LALR parser.
+This is going to be an interface to <a href="http://web.science.mq.edu.au/~mjohnson/code/lalrparser.lisp">Mark Johnson's LALR parser generator</a>.
 
 What it does:
 
