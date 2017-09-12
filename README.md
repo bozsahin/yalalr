@@ -7,7 +7,7 @@ What it does in Common Lisp:
 
 1. returns unknown tokens as type ID, so the lexicon is open-ended. The return value is (ID text), where text is the token itself.
 2. provides a standard workflow for writing syntax-directed LR translation and code generation.
-3. uses <code>lalrparser.lisp</code> as is.
+3. uses <code>lalrparser.lisp</code> as is. It is not part of this repo.
 
 soon.
 -cem bozsahin
