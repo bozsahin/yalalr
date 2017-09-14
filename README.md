@@ -5,10 +5,7 @@ This is going to be an interface to <a href="http://web.science.mq.edu.au/~mjohn
 
 What it does in Common Lisp:
 
-1. Returns unknown tokens as things with the type <code>`ID'</code>, so the lexicon is open-ended, unlike the LALR parser. The return value is <code>(ID text)</code>, where text is the token itself.
-
-(A token is anything that the Common Lisp reader considers a token.)
-
+1. Returns unknown tokens as things with the type <code>`ID'</code>, so the lexicon is open-ended, unlike the LALR parser. The return value is <code>(ID text)</code>, where text is the token itself. (A token is anything that the Common Lisp reader considers a token.)
 2. Provides a standard workflow for writing syntax-directed LR translation and code generation.
 3. Uses <code>lalrparser.lisp</code> as is. It is not part of this repo.
 
