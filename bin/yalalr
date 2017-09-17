@@ -1,0 +1,2 @@
+#!/bin/bash
+$RLWRAP $YALALR_LISP --load $LALR_HOME/lalrparser.lisp --load $YALALR_HOME/bin/yalalr.lisp --eval '(welcome)'
