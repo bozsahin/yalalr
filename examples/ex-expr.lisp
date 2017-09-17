@@ -29,7 +29,7 @@
   (te    --> te DIV f         #'(lambda (te DIV f) (append te f '(DIV /))))
   (te    --> f                #'(lambda (f)(identity f)))
   (f     --> LP e RP          #'(lambda (LP e RP) (identity e)))
-  (f     --> LP SUB e RP      #'(lambda (LP SUB e RP) (append e '(NEG /))))
+  (f     --> SUB ID           #'(lambda (SUB ID) (append (list 'RVAL) (list (val ID) '/) '(NEG /))))
   (f     --> ID               #'(lambda (ID) (list 'RVAL (val ID) '/)))
   ))
 
