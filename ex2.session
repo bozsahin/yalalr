@@ -1,0 +1,143 @@
+$ ex2.lexer ex2.data > tokens
+
+> (load "ex2.lisp")
+
+T
+> (make-lalrparser)
+; in: DEFUN LALR-PARSER
+;     #'(LAMBDA (LEX END) (LIST LEX))
+; 
+; caught STYLE-WARNING:
+;   The variable END is defined but never used.
+
+;     #'(LAMBDA (START LEX END) (APPEND START (LIST LEX)))
+; 
+; caught STYLE-WARNING:
+;   The variable END is defined but never used.
+
+;     #'(LAMBDA (LP ID RP CAT1 ARROW CAT) (CONS (CONS ID CAT1) CAT))
+; 
+; caught STYLE-WARNING:
+;   The variable LP is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable RP is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable ARROW is defined but never used.
+
+;     #'(LAMBDA (VALDOT) (IDENTITY NIL))
+; 
+; caught STYLE-WARNING:
+;   The variable VALDOT is defined but never used.
+
+;     #'(LAMBDA (LP BODYS RP) (IDENTITY BODYS))
+; 
+; caught STYLE-WARNING:
+;   The variable LP is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable RP is defined but never used.
+
+;     #'(LAMBDA (VALBS ID VARDOT LBODY) (MK-L (MK-V (CADR ID)) LBODY))
+; 
+; caught STYLE-WARNING:
+;   The variable VALBS is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable VARDOT is defined but never used.
+
+;     #'(LAMBDA (SYNS COLON LF) (CONS (LIST 'SYN SYNS) (LIST (LIST 'SEM LF))))
+; 
+; caught STYLE-WARNING:
+;   The variable COLON is defined but never used.
+
+;     #'(LAMBDA (LB EQNS RB) (IDENTITY EQNS))
+; 
+; caught STYLE-WARNING:
+;   The variable LB is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable RB is defined but never used.
+
+;     #'(LAMBDA (ID1 EQOP ID) (LIST (CADR ID1) (CADR ID)))
+; 
+; caught STYLE-WARNING:
+;   The variable EQOP is defined but never used.
+
+;     #'(LAMBDA (EQNS COMMA EQN) (APPEND EQNS (LIST EQN)))
+; 
+; caught STYLE-WARNING:
+;   The variable COMMA is defined but never used.
+
+;     #'(LAMBDA (VALBS) (LIST 'DIR 'BS))
+; 
+; caught STYLE-WARNING:
+;   The variable VALBS is defined but never used.
+
+;     #'(LAMBDA (VALFS) (LIST 'DIR 'FS))
+; 
+; caught STYLE-WARNING:
+;   The variable VALFS is defined but never used.
+
+;     #'(LAMBDA (VALBS2 VALBS)
+;         (LIST (LIST 'DIR 'BS) (LIST 'MODAL 'STAR) (LIST 'LEX T)))
+; 
+; caught STYLE-WARNING:
+;   The variable VALBS2 is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable VALBS is defined but never used.
+
+;     #'(LAMBDA (VALFS2 VALFS)
+;         (LIST (LIST 'DIR 'FS) (LIST 'MODAL 'STAR) (LIST 'LEX T)))
+; 
+; caught STYLE-WARNING:
+;   The variable VALFS2 is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable VALFS is defined but never used.
+
+;     #'(LAMBDA (VALDOT) (LIST 'MODAL 'ALL))
+; 
+; caught STYLE-WARNING:
+;   The variable VALDOT is defined but never used.
+
+;     #'(LAMBDA (LP SYNS RP) (IDENTITY SYNS))
+; 
+; caught STYLE-WARNING:
+;   The variable LP is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable RP is defined but never used.
+
+;     #'(LAMBDA (ID MTAG SPECOP CAT)
+;         (PROGN
+;          (INCF *CCG-GRAMMAR-KEYS*)
+;          (LIST (LIST 'KEY *CCG-GRAMMAR-KEYS*) (LIST 'PHON (CADR ID)) MTAG
+;                (FIRST CAT) (SECOND CAT) (LIST 'PARAM 1.0))))
+; 
+; caught STYLE-WARNING:
+;   The variable SPECOP is defined but never used.
+; 
+; compilation unit finished
+;   caught 25 STYLE-WARNING conditions
+STYLE-WARNING: redefining COMMON-LISP-USER::LALR-PARSER in DEFUN
+
+LALR-PARSER
+NIL
+NIL
+> (target-code)
+
+(DEFPARAMETER *CCG-GRAMMAR*
+  '(((KEY 1) (PHON JOHN) (MORPH N)
+     (SYN
+      (((BCAT S) (FEATS NIL)) (DIR FS) (MODAL ALL)
+       (((BCAT S) (FEATS NIL)) (DIR BS) (MODAL ALL) ((BCAT NP) (FEATS NIL)))))
+     (SEM (LAM P (P !JOHN))) (PARAM 1.0))
+    ((KEY 2) (PHON LIKES) (MORPH V)
+     (SYN
+      ((((BCAT S) (FEATS NIL)) (DIR BS) (MODAL ALL) ((BCAT NP) (FEATS NIL)))
+       (DIR FS) (MODAL ALL) ((BCAT NP) (FEATS NIL))))
+     (SEM (LAM X (LAM Y ((!LIKES X) Y)))) (PARAM 1.0))))
+> (dribble)
