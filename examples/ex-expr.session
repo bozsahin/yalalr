@@ -24,16 +24,10 @@ T
 ; caught STYLE-WARNING:
 ;   The variable RP is defined but never used.
 
-;     #'(LAMBDA (LP SUB E RP) (APPEND E '(NEG /)))
-; 
-; caught STYLE-WARNING:
-;   The variable LP is defined but never used.
+;     #'(LAMBDA (SUB ID) (APPEND (LIST 'RVAL) (LIST (VAL ID) '/) '(NEG /)))
 ; 
 ; caught STYLE-WARNING:
 ;   The variable SUB is defined but never used.
-; 
-; caught STYLE-WARNING:
-;   The variable RP is defined but never used.
 
 ;     #'(LAMBDA (TE MULT F) (APPEND TE F '(MULT /)))
 ; 
@@ -56,13 +50,14 @@ T
 ;   The variable SUB is defined but never used.
 ; 
 ; compilation unit finished
-;   caught 12 STYLE-WARNING conditions
+;   caught 10 STYLE-WARNING conditions
+STYLE-WARNING: redefining COMMON-LISP-USER::LALR-PARSER in DEFUN
 
 LALR-PARSER
 NIL
 NIL
 > (target-code)
 
-(LVAL A / RVAL B / RVAL C / RVAL D / MULT / ADD / RVAL E / RVAL F / ADD / NEG /
+(LVAL A / RVAL B / RVAL C / RVAL D / MULT / ADD / RVAL E / NEG / RVAL F / ADD /
  RVAL 5 / DIV / SUB / MOVE)
 > (dribble)
