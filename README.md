@@ -11,6 +11,6 @@ What it does in Common Lisp:
 4. It can take input online or as output from a lexical analyzer (default case)
 
 It can download and install lalrparser.lisp, a suitable Common Lisp, and set itself up to be used from any directory. Just clone this repo
-and do <code>run-for-first-time-install</code>.
+and do <code>run-to-complete-first-time-install</code>.
 
 -cem bozsahin
