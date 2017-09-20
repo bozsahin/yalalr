@@ -10,7 +10,7 @@ What it does in Common Lisp:
 3. uses <code>lalrparser.lisp</code> as is. It is not part of this repo.
 4. It can take input online or as output from a lexical analyzer (default case)
 
-It can download and install lalrparser.lisp, a suitable Common Lisp, and set itself, to be used from any directory. Just clone this repo
+It can download and install lalrparser.lisp, a suitable Common Lisp, and set itself up to be used from any directory. Just clone this repo
 and do <code>run-for-first-time-install</code>.
 
 -cem bozsahin
