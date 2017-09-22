@@ -20,8 +20,8 @@
 ;;;; LALR data 
 
 (defparameter grammar
-  '(
-    (start --> ID COLON EQLS e END  #'(lambda (ID COLON EQLS e END) (append (list 'LVAL (val ID) '/) e '(MOVE))))
+'(
+  (start --> ID COLON EQLS e END  #'(lambda (ID COLON EQLS e END) (append (list 'LVAL (val ID) '/) e '(MOVE))))
   (e     --> e ADD te         #'(lambda (e ADD te) (append e te '(ADD /))))
   (e     --> e SUB te         #'(lambda (e SUB te) (append e te '(SUB /))))
   (e     --> te               #'(lambda (te) (identity te)))
@@ -35,7 +35,8 @@
 
 (defparameter lexforms '(ID END COLON EQLS LP RP ADD SUB MULT DIV))
 
-(defparameter lexicon '((\; END) ;; all but ID goes in the lexicon
+(defparameter lexicon '(
+	          (\; END) ;; all but ID goes in the lexicon
 		  (|:| COLON)
 		  (|=| EQLS)
 		  (|(| LP)
