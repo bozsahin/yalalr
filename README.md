@@ -12,7 +12,7 @@ What it does in Common Lisp:
 
 <b>Yacc-like</b> workflow: Write a grammar and generate the LALR parser using <code>yalalr</code>. Write a lexer, make sure it wraps the whole thing in (..), save it in 'tokens' file, and do <code>(target-code)</code> in yalalr to generate code.
 
-It can download and install lalrparser.lisp, a suitable Common Lisp if desired, and set itself up to be used from any directory. Just clone this repo
+The installer can download and install lalrparser.lisp, a suitable Common Lisp if desired, and set itself up to be used from any directory. Just clone this repo
 and do <code>run-to-complete-first-time-install</code>.
 
 -cem bozsahin
