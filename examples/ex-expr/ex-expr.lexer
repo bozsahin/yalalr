@@ -1,5 +1,4 @@
 #!/bin/bash
-# usage: wrapper fn     (wraps text in file fn as below)
 # this is a script to wrap around all special symbols in |..| so that Lisp reader
 # can treat them as data
 # Then wraps them all in one (..) so that they can be read by Lisp reader in one fell swoop
