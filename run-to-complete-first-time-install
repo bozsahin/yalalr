@@ -2,6 +2,8 @@
 # installs yalalr externals, to go with git yalalr repo.   -cem bozsahin
 #  also sets PATH and lisp execs so that yalalr is available from anywhere
 yalalrdir=`pwd`
+# brew does not allow sudo anymore.
+SUDO=sudo    
 echo 'yalalr external resources install and path set up'
 echo '================================================='
 # check to see if lalr has been installed before
@@ -36,6 +38,7 @@ fi
 if [ ! "$locallisp" ]; then
   if [ -x /usr/local/bin/brew ] || [ -x /sw/bin/brew ] || [ -x /sw/local/bin/brew ]; then
     	packager=brew
+	SUDO=
   fi
   if [ -x /usr/bin/apt-get ] || [ -x /usr/local/bin/apt-get ]; then
 	packager=apt-get   # overrides brew if you have them both
@@ -46,7 +49,7 @@ if [ ! "$locallisp" ]; then
 	read -r -p '? Do you want to install SBCL [y/n]? ' auxinstall
 	if [ $auxinstall ] && [ $auxinstall = y ] || [ $auxinstall = Y ]; then
 		echo '! WARNING: you need sudo access now'
-		sudo $packager install sbcl
+		$SUDO $packager install sbcl
 		locallisp=`which sbcl`
 	fi
 	if [ -x /usr/local/bin/rlwrap ] || [ -x /usr/bin/rlwrap ] || [ -x /sw/bin/rlwrap ] || [ -x /sw/local/bin/rlwrap ]; then
@@ -54,7 +57,7 @@ if [ ! "$locallisp" ]; then
 	else 
 		echo '! rlwrap not found. It is very annoying NOT to have it when you run yalalr'
 		echo '! WARNING: you need sudo access now'
-		sudo $packager install rlwrap
+		$SUDO $packager install rlwrap
         fi
   else
 	echo '! apt-get or brew not found. I leave Common Lisp and rlwrap handling to you.'
