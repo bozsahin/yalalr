@@ -1,20 +1,20 @@
 ;;;; ============================================================================
 ;;;; ==   The interface to the LALR parser of Mark Johnson
-;;;; ==   -cem bozsahin, 2017
+;;;; ==   -cem bozsahin, 2017-2018, Ankara
 ;;;; ============================================================================
 
-(defparameter *ENDMARKER* '$) ; these are the globals of lalrparser.lisp
+(defparameter *ENDMARKER* '$) ; these are the globals of the lalrparser.lisp
 (defparameter grammar nil)
 (defparameter lexforms nil)
 (defparameter lexicon nil)
 
 (defun which-yalalr ()
-  "yalalr, version 1.0")
+  "yalalr, version 1.1")
 
 (defun welcome()
   (format t "~%===================================================")
   (format t "~%Welcome to ~A" (which-yalalr))
-  (format t "~%an interface to lalrparser.lisp of Mark Johnson")
+  (format t "~%an interface to lalrparser.lisp of Mark Johnson~%written by Cem Bozsahin")
   (format t "~%---------------------------------------------------")
   (format t "~%Ready.")
   (format t "~%===================================================~%"))
@@ -22,11 +22,11 @@
 (defun help ()
   (format t "1. Setf your grammar, lexicon, lexforms in these variables,~%2. and call make-lalrparser.")
   (format t "~%   That will create the LALR parse table.~%3. Then do (target-code '(.. source code ..)) to generate target code for source code online.")
-  (format t "~2%If you have lexically analyzed offline, and saved the result in 'tokens' file, then just do (target-code) to generate code.")
-  (format t "~%Make sure your lexer returns one Lisp list of tokens.")
-  (format t"~2%Yacc-like workflow: write a lexer, make sure it wraps the whole thing in (..), and save it in 'tokens' file and do (target-code) in yalalr")
-  (format t "~2%-To make changes in your grammar/lexicon/lexforms, repeat 1-2.")
-  (format t "~%-Change *ENDMARKER* from ~A to anything, if you have to." *ENDMARKER*)
+  (format t "~2%If you have lexically analyzed offline, and saved the result in a file <fn>,~% then just do (target-code <fn>) to generate code.")
+  (format t "~%The default filename is 'tokens'.~%Make sure your lexer returns ONE Lisp list of tokens in the file.")
+  (format t"~2%Yacc/bison/lex/flex-like workflow:~%   write a lexer, make sure it wraps the whole thing in (..), and save it in a file and do (target-code <fn>) in yalalr.~%It is basically bottom-up SDD in Lisp.")
+  (format t "~2%-To make changes in your grammar/lexicon/lexforms, repeat 1. You have to re-make.")
+  (format t "~%-Change *ENDMARKER* from ~A to anything, IF you have to." *ENDMARKER*)
   (format t "~% Don't forget to change it in the lexicon as well if you do.")
   (which-yalalr))
 
@@ -58,10 +58,12 @@
                         (format nil "Error before ~A" words)))
     (lalr-parser #'next-input #'parse-error)))
 
-(defun target-code (&optional (words (with-open-file (s "tokens" :direction :input
-							:if-does-not-exist :error)
-				       (read s))))
+(defun target-code (&optional (words "tokens"))
   "sticks in the end marker to lexically analyzed words, 
   to pass on to lalrparser's overridden parse function.
-  Reads from tokens file by default."
-  (parse (append words (list *ENDMARKER*))))
+  Reads from a file if words is not a list. Default filename is 'tokens'."
+  (if (listp words)
+    (parse (append words (list *ENDMARKER*)))
+    (with-open-file (s words :direction :input
+		       :if-does-not-exist :error)
+      (parse (append (read s) (list *ENDMARKER*))))))
