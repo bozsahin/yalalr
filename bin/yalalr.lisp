@@ -14,7 +14,7 @@
 (defun welcome()
   (format t "~%===================================================")
   (format t "~%Welcome to ~A" (which-yalalr))
-  (format t "~%an interface to lalrparser.lisp of Mark Johnson~%written by Cem Bozsahin")
+  (format t "~%an interface to LALR parser of Mark Johnson~% send bug reports to cem.bozsahin@gmail.com")
   (format t "~%---------------------------------------------------")
   (format t "~%Ready.")
   (format t "~%===================================================~%"))
