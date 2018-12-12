@@ -1,9 +1,9 @@
 Script started on Wed Dec 12 11:47:29 2018
-[?1034hexpr-zac> cat tokens2[26@ex-expr.lexer ex-expr.data2 >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat tokens[K[25@ex-expr.lexer ex-expr.data >[C[C[C[C[C[C[C
-expr-zac> ex-expr.lexer ex-expr.data > tokens[C[C[C[C[C[C[C[C[C[Ccat tokens2[K[26@ex-expr.lexer ex-expr.data2 >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat tokens[K
+expr-zac> ex-expr.lexer ex-expr.data > tokens
+expr-zac> cat tokens
 (a  |:|  |=|   b |+| c |*| d |-|  |(|  |-|  e |+| f |)|  |/| 5 |;| )
-expr-zac> cat tokens[25@ex-expr.lexer ex-expr.data >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat tokens2[K[26@ex-expr.lexer ex-expr.data2 >[C[C[C[C[C[C[C[C
-expr-zac> ex-expr.lexer ex-expr.data2 > tokens2[C[C[C[C[C[C[C[C[C[Ccat tokens[K[25@ex-expr.lexer ex-expr.data >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat tokens2[K
+expr-zac> ex-expr.lexer ex-expr.data2 > tokens2
+expr-zac> cat tokens2
 (b  |:|  |=|    |-| f |/| 5 |;| )
 expr-zac> exit
 
