@@ -1,0 +1,10 @@
+Script started on Wed Dec 12 11:40:53 2018
+[?1034hexpr-tac> cat tokens2[26@ex-expr.lexer ex-expr.data2 >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmore tokens[Kex-expr.lexer ex-expr.data2 > tokens2[C[C[C[C[C[C[C[C[C[Cmore tokens[K[25@ex-expr.lexer ex-expr.data2 >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cyalalr[Kex-expr.lexer ex-expr.data2 > tokens[C[C[C[C[C[C[C[C[C[Cyalalr[Kvim ex-expr.lisp[C[C[C[C[C[C[C[C[C[Cls[Kvim ex-expr.lisp[C[C[C[C[C[C[C[C[C[C[10Pyalalrex-expr.lexer ex-expr.data2 > tokens[C[1P
+expr-tac> cat tokens
+(a  |:|  |=|   b |+| c |*| d |-|  |(|  |-|  e |+| f |)|  |/| 5 |;| )
+expr-tac> cat tokens[25@ex-expr.lexer ex-expr.data >[C[C[C[C[C[C[C[1@2[C[C[C[C[C[C[C[CAs[1Ps[C[C2
+expr-tac> ex-expr.lexer ex-expr.data2 > tokens2[C[C[C[C[C[C[C[C[C[Ccat tokens[K2
+(b  |:|  |=|    |-| f |/| 5 |;| )
+expr-tac> exit
+
+Script done on Wed Dec 12 11:41:48 2018

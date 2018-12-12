@@ -1,0 +1,10 @@
+Script started on Wed Dec 12 11:38:24 2018
+[?1034hexpr-zac> ex-exmpr[K[K[Kpr.lexer ex-expr.data > ti[Kokens
+expr-zac> more tokens
+[?1h=(a  |:|  |=|   b |+| c |*| d |-|  |(|  |-|  e |+| f |)|  |/| 5 |;| )
+[7mtokens (END)[27m[K[K[K[?1l>expr-zac> more tokens[24@ex-expr.lexer ex-expr.data >[C[C[C[C[C[C[C[1@2[C[C[C[C[C[C[C[C[C[C2
+expr-zac> ex-expr.lexer ex-expr.data2 > tokens2[C[C[C[C[C[C[C[C[C[Cmore tokens[K[C[C[C[C[C[25@ex-expr.lexer ex-expr.data2 >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmore tokens[K[K[K[K[K[K[K[K[K[K[K[Kcat tokens2
+(b  |:|  |=|    |-| f |/| 5 |;| )
+expr-zac> exit
+
+Script done on Wed Dec 12 11:40:03 2018
