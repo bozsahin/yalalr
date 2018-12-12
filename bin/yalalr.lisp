@@ -12,6 +12,9 @@
   "yalalr, version 1.1")
 
 (defun welcome()
+  (format t "~%---------------------------------------------------")
+  (format t "~%If you've got WARNINGS during loading,~%   you can ignore them.")
+  (format t "~%They are caused by the LALR parser,  ~%   which refers to functions generated at run-time.")
   (format t "~%===================================================")
   (format t "~%Welcome to ~A" (which-yalalr))
   (format t "~%an interface to LALR parser of Mark Johnson~% send bug reports to cem.bozsahin@gmail.com")
