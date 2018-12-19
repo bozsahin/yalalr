@@ -8,12 +8,12 @@
 ;; which refer to these temporaries, and implements the TAC as register operations.
 ;; This is because in MIPS all ops are done in registers; no op refers to memory locations.
 ;; For example (3ac mult a b c) meaning a := b * c in IC code is translated into
-;;  lw $t0,#b
-;;  lw $t1,#c
-;;  mul $t2,$t0,$t1
-;;  sw $t2,#a
+;;  lw $t0,b
+;;  lw $t1,c
+;;  mul $t0,$t0,$t1
+;;  sw $t0,a
 ;;
-;; where lw is load word and #x means address of x in its .data block, which we created as a label.
+;; where lw is load word from memory to register
 ;; and sw means save the register's value in a word in memory.
 ;; $ti are temporary value registers of MIPS-like architectures. All we need is 2 for TAC codes.
 ;; We can think of this version as a register-based TAC, rather than true target code.
