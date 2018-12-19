@@ -1,11 +1,23 @@
 
 > (load "ex-expr")
 
+; file: /Users/bozsahin/myrepos/yalalr/examples/expr-tac-symtab/ex-expr.lisp
+; in: DEFUN CREATE-DATA-SEGMENT
+;     #'(LAMBDA (KEY VAL)
+;         (IF (EQUAL (SYM-GET-TYPE VAL) 'VAR)
+;             (FORMAT T "~%~A: .word 0" (SYM-GET-VALUE VAL))))
+; 
+; caught STYLE-WARNING:
+;   The variable KEY is defined but never used.
+; 
+; compilation unit finished
+;   caught 1 STYLE-WARNING condition
+
 T
 > (make-lalrparser)
 ; in: DEFUN LALR-PARSER
 ;     #'(LAMBDA (ID COLON EQLS E END)
-;         (PPRINT-CODE (MK-CODE (APPEND (VAR-GET-CODE E) (MK-2COPY # #)))))
+;         (TAC-TO-RAC (MK-CODE (APPEND (VAR-GET-CODE E) (MK-2COPY # #)))))
 ; 
 ; caught STYLE-WARNING:
 ;   The variable COLON is defined but never used.
@@ -26,13 +38,15 @@ T
 
 ;     #'(LAMBDA (SUB ID)
 ;         (LET ((NEWPLACE (NEWTEMP)))
-;           (LIST (MK-PLACE NEWPLACE) (MK-CODE (MK-2AC 'UMINUS NEWPLACE #)))))
+;           (MK-SYM-ENTRY NEWPLACE)
+;           (LIST (MK-PLACE NEWPLACE) (MK-CODE (MK-2AC 'SUB NEWPLACE #)))))
 ; 
 ; caught STYLE-WARNING:
 ;   The variable SUB is defined but never used.
 
 ;     #'(LAMBDA (TE MULT F)
 ;         (LET ((NEWPLACE (NEWTEMP)))
+;           (MK-SYM-ENTRY NEWPLACE)
 ;           (LIST (MK-PLACE NEWPLACE) (MK-CODE (APPEND # # #)))))
 ; 
 ; caught STYLE-WARNING:
@@ -40,6 +54,7 @@ T
 
 ;     #'(LAMBDA (E ADD TE)
 ;         (LET ((NEWPLACE (NEWTEMP)))
+;           (MK-SYM-ENTRY NEWPLACE)
 ;           (LIST (MK-PLACE NEWPLACE) (MK-CODE (APPEND # # #)))))
 ; 
 ; caught STYLE-WARNING:
@@ -47,6 +62,7 @@ T
 
 ;     #'(LAMBDA (TE DIV F)
 ;         (LET ((NEWPLACE (NEWTEMP)))
+;           (MK-SYM-ENTRY NEWPLACE)
 ;           (LIST (MK-PLACE NEWPLACE) (MK-CODE (APPEND # # #)))))
 ; 
 ; caught STYLE-WARNING:
@@ -54,6 +70,7 @@ T
 
 ;     #'(LAMBDA (E SUB TE)
 ;         (LET ((NEWPLACE (NEWTEMP)))
+;           (MK-SYM-ENTRY NEWPLACE)
 ;           (LIST (MK-PLACE NEWPLACE) (MK-CODE (APPEND # # #)))))
 ; 
 ; caught STYLE-WARNING:
@@ -65,20 +82,98 @@ T
 LALR-PARSER
 NIL
 NIL
-> (target-code "tokens")
+> (target-code-mips "tokens")
 
-(3AC MULT #:|t-362| C D)
+
+TAC code:
+
+
+(3AC MUL #:|t-362| C D)
 (3AC ADD #:|t-363| B #:|t-362|)
-(2AC UMINUS #:|t-364| E)
+(2AC SUB #:|t-364| E)
 (3AC ADD #:|t-365| #:|t-364| F)
 (3AC DIV #:|t-366| #:|t-365| 5)
 (3AC SUB #:|t-367| #:|t-363| #:|t-366|)
 (2COPY A #:|t-367|)
-T
-> (target-code "tokens2")
 
-(2AC UMINUS #:|t-368| F)
+MIPS-style code using register ops only:
+
+
+
+.data
+
+B: .word 0
+C: .word 0
+D: .word 0
+t-362: .word 0
+t-363: .word 0
+t-364: .word 0
+F: .word 0
+t-365: .word 0
+t-366: .word 0
+t-367: .word 0
+
+.text
+
+main:
+
+lw $t0,C
+lw $t1,D
+MUL $t0,$t0,$t1
+sw $t0,t-362
+lw $t0,B
+lw $t1,t-362
+ADD $t0,$t0,$t1
+sw $t0,t-363
+lw $t1,E
+SUB $t0,$zero,$t1
+sw $t0,t-364
+lw $t0,t-364
+lw $t1,F
+ADD $t0,$t0,$t1
+sw $t0,t-365
+lw $t0,t-365
+li $t1,5
+DIV $t0,$t0,$t1
+sw $t0,t-366
+lw $t0,t-363
+lw $t1,t-366
+SUB $t0,$t0,$t1
+sw $t0,t-367
+lw $t0,t-367
+sw $t0,A
+NIL
+> (target-code-mips "tokens2")
+
+
+TAC code:
+
+
+(2AC SUB #:|t-368| F)
 (3AC DIV #:|t-369| #:|t-368| 5)
 (2COPY B #:|t-369|)
-T
+
+MIPS-style code using register ops only:
+
+
+
+.data
+
+t-368: .word 0
+t-369: .word 0
+
+.text
+
+main:
+
+lw $t1,F
+SUB $t0,$zero,$t1
+sw $t0,t-368
+lw $t0,t-368
+li $t1,5
+DIV $t0,$t0,$t1
+sw $t0,t-369
+lw $t0,t-369
+sw $t0,B
+NIL
 > (dribble)
