@@ -60,6 +60,8 @@
 ;;  (2ac op p1 p2)
 ;;  (2copy p1 p1)
 
+(defparameter *tac-to-mips* '((MULT MUL) (DIV DIV)(ADD ADD)(SUB SUB)(UMINUS SUB))) ; intstruction set corr.
+
 ;; two functions to get type and value of tokens
 
 ;; in LALR parser, every token is a list whose first element is its type and second element its value.
@@ -98,9 +100,11 @@
     (format t "~%li ~A,~A" register p)
     (format t "~%lw ~A,~A" register p)))
 
+(defun tac-get-mips (op)
+  (second (assoc op *tac-to-mips*)))
 
 (defun mk-mips-3ac (i)
-  (let ((op (first i))
+  (let ((op (tac-get-mips (first i)))
 	(p1 (second i))
 	(p2 (third i))
 	(p3 (fourth i)))
@@ -110,7 +114,7 @@
     (format t "~%sw $t0,~A" p1)))
 
 (defun mk-mips-2ac (i)
-  (let ((op (first i))
+  (let ((op (tac-get-mips (first i)))
 	(p1 (second i))
 	(p2 (third i)))
     (mk-mips p2 "$t1")
@@ -195,7 +199,7 @@
 						     (list (mk-place newplace)
 							   (mk-code (append (var-get-code te)
 									    (var-get-code f)
-									    (mk-3ac 'mul newplace
+									    (mk-3ac 'mult newplace
 										    (var-get-place te)
 										    (var-get-place f))))))))
   (te    --> te DIV f         #'(lambda (te DIV f) (let ((newplace (newtemp)))
@@ -211,7 +215,7 @@
   (f     --> SUB ID           #'(lambda (SUB ID) (let ((newplace (newtemp)))
 						   (mk-sym-entry newplace)
 						   (list (mk-place newplace)
-							 (mk-code (mk-2ac 'sub newplace
+							 (mk-code (mk-2ac 'uminus newplace
 										  (t-get-val ID)))))))
   (f     --> ID               #'(lambda (ID) (progn 
 					       (mk-sym-entry (t-get-val ID))
