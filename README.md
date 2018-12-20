@@ -21,6 +21,8 @@ To use:
 3. <code>(make-lalrparser)</code>. This is required to make the LALR tables online.
 4. <code>(target-code x)</code> to generate code for <code>x</code>. If it is a tokenized list, it generates code for that.
 If it's a file, reads ONE LIST from the file and generates code for it.
+4'. Use <code>(target-code-mips x)</code> if you want to generate MIPS code in <code>expr-mips</code>. This one clears
+the symbol hash table before calling <code>target-code</code>.
 5. <code>(help)</code> explains all this.
 
 
