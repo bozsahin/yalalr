@@ -1,7 +1,7 @@
 
 > (load "ex-expr")
 
-; file: /Users/bozsahin/myrepos/yalalr/examples/expr-tac-symtab/ex-expr.lisp
+; file: /Users/bozsahin/myrepos/yalalr/examples/expr-mips/ex-expr.lisp
 ; in: DEFUN CREATE-DATA-SEGMENT
 ;     #'(LAMBDA (KEY VAL)
 ;         (IF (EQUAL (SYM-GET-TYPE VAL) 'VAR)
@@ -17,7 +17,7 @@ T
 > (make-lalrparser)
 ; in: DEFUN LALR-PARSER
 ;     #'(LAMBDA (ID COLON EQLS E END)
-;         (TAC-TO-RAC (MK-CODE (APPEND (VAR-GET-CODE E) (MK-2COPY # #)))))
+;         (PROGN (MK-SYM-ENTRY (T-GET-VAL ID)) (TAC-TO-RAC (MK-CODE (APPEND # #)))))
 ; 
 ; caught STYLE-WARNING:
 ;   The variable COLON is defined but never used.
@@ -39,7 +39,8 @@ T
 ;     #'(LAMBDA (SUB ID)
 ;         (LET ((NEWPLACE (NEWTEMP)))
 ;           (MK-SYM-ENTRY NEWPLACE)
-;           (LIST (MK-PLACE NEWPLACE) (MK-CODE (MK-2AC 'SUB NEWPLACE #)))))
+;           (MK-SYM-ENTRY (T-GET-VAL ID))
+;           (LIST (MK-PLACE NEWPLACE) (MK-CODE (MK-2AC 'UMINUS NEWPLACE #)))))
 ; 
 ; caught STYLE-WARNING:
 ;   The variable SUB is defined but never used.
@@ -82,19 +83,19 @@ T
 LALR-PARSER
 NIL
 NIL
-> (target-code-mips "tokens")
+> (target-code-mips "tokens1")
 
 
 TAC code:
 
 
-(3AC MUL #:|t-362| C D)
-(3AC ADD #:|t-363| B #:|t-362|)
-(2AC SUB #:|t-364| E)
-(3AC ADD #:|t-365| #:|t-364| F)
-(3AC DIV #:|t-366| #:|t-365| 5)
-(3AC SUB #:|t-367| #:|t-363| #:|t-366|)
-(2COPY A #:|t-367|)
+(3AC MULT #:|t362| C D)
+(3AC ADD #:|t363| B #:|t362|)
+(2AC UMINUS #:|t364| E)
+(3AC ADD #:|t365| #:|t364| F)
+(3AC DIV #:|t366| #:|t365| 5)
+(3AC SUB #:|t367| #:|t363| #:|t366|)
+(2COPY A #:|t367|)
 
 MIPS-style code using register ops only:
 
@@ -105,42 +106,43 @@ MIPS-style code using register ops only:
 B: .word 0
 C: .word 0
 D: .word 0
-t-362: .word 0
-t-363: .word 0
-t-364: .word 0
+t362: .word 0
+t363: .word 0
+t364: .word 0
+E: .word 0
 F: .word 0
-t-365: .word 0
-t-366: .word 0
-t-367: .word 0
+t365: .word 0
+t366: .word 0
+t367: .word 0
+A: .word 0
 
 .text
 
 main:
-
 lw $t0,C
 lw $t1,D
-MUL $t0,$t0,$t1
-sw $t0,t-362
+mul $t0,$t0,$t1
+sw $t0,t362
 lw $t0,B
-lw $t1,t-362
-ADD $t0,$t0,$t1
-sw $t0,t-363
+lw $t1,t362
+add $t0,$t0,$t1
+sw $t0,t363
 lw $t1,E
-SUB $t0,$zero,$t1
-sw $t0,t-364
-lw $t0,t-364
+sub $t0,$zero,$t1
+sw $t0,t364
+lw $t0,t364
 lw $t1,F
-ADD $t0,$t0,$t1
-sw $t0,t-365
-lw $t0,t-365
+add $t0,$t0,$t1
+sw $t0,t365
+lw $t0,t365
 li $t1,5
-DIV $t0,$t0,$t1
-sw $t0,t-366
-lw $t0,t-363
-lw $t1,t-366
-SUB $t0,$t0,$t1
-sw $t0,t-367
-lw $t0,t-367
+div $t0,$t0,$t1
+sw $t0,t366
+lw $t0,t363
+lw $t1,t366
+sub $t0,$t0,$t1
+sw $t0,t367
+lw $t0,t367
 sw $t0,A
 NIL
 > (target-code-mips "tokens2")
@@ -149,9 +151,9 @@ NIL
 TAC code:
 
 
-(2AC SUB #:|t-368| F)
-(3AC DIV #:|t-369| #:|t-368| 5)
-(2COPY B #:|t-369|)
+(2AC UMINUS #:|t368| F)
+(3AC DIV #:|t369| #:|t368| 5)
+(2COPY B #:|t369|)
 
 MIPS-style code using register ops only:
 
@@ -159,21 +161,86 @@ MIPS-style code using register ops only:
 
 .data
 
-t-368: .word 0
-t-369: .word 0
+t368: .word 0
+F: .word 0
+t369: .word 0
+B: .word 0
 
 .text
 
 main:
-
 lw $t1,F
-SUB $t0,$zero,$t1
-sw $t0,t-368
-lw $t0,t-368
+sub $t0,$zero,$t1
+sw $t0,t368
+lw $t0,t368
 li $t1,5
-DIV $t0,$t0,$t1
-sw $t0,t-369
-lw $t0,t-369
+div $t0,$t0,$t1
+sw $t0,t369
+lw $t0,t369
 sw $t0,B
 NIL
+> (target-code-mips "tokens3")
+
+
+TAC code:
+
+
+(3AC MULT #:|t370| C 78.45)
+(3AC ADD #:|t371| B #:|t370|)
+(2AC UMINUS #:|t372| E)
+(3AC ADD #:|t373| #:|t372| F)
+(3AC DIV #:|t374| #:|t373| 12.5)
+(3AC SUB #:|t375| #:|t371| #:|t374|)
+(2COPY A #:|t375|)
+
+MIPS-style code using register ops only:
+
+
+
+.data
+
+B: .word 0
+C: .word 0
+t370: .word 0
+t371: .word 0
+t372: .word 0
+E: .word 0
+F: .word 0
+t373: .word 0
+t374: .word 0
+t375: .word 0
+A: .word 0
+
+.text
+
+main:
+lw $t0,C
+li $t1,78.45
+mul $t0,$t0,$t1
+sw $t0,t370
+lw $t0,B
+lw $t1,t370
+add $t0,$t0,$t1
+sw $t0,t371
+lw $t1,E
+sub $t0,$zero,$t1
+sw $t0,t372
+lw $t0,t372
+lw $t1,F
+add $t0,$t0,$t1
+sw $t0,t373
+lw $t0,t373
+li $t1,12.5
+div $t0,$t0,$t1
+sw $t0,t374
+lw $t0,t371
+lw $t1,t374
+sub $t0,$t0,$t1
+sw $t0,t375
+lw $t0,t375
+sw $t0,A
+NIL
+> (target-code-mips "tokens4")
+
+"Error before (B + C * 78.45 - ( - E + F ) / 12.5 ; $)"
 > (dribble)

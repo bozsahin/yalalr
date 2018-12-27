@@ -60,7 +60,8 @@
 ;;  (2ac op p1 p2)
 ;;  (2copy p1 p1)
 
-(defparameter *tac-to-mips* '((MULT MUL) (DIV DIV)(ADD ADD)(SUB SUB)(UMINUS SUB))) ; intstruction set corr.
+(defparameter *tac-to-mips* '((MULT "mul") (DIV "div")(ADD "add")(SUB "sub")(UMINUS "sub"))) ; intstruction set corr.
+ ;; MIPS is case-sensitive, so we use strings to map TAC code to MIPS
 
 ;; two functions to get type and value of tokens
 
@@ -85,14 +86,6 @@
     (pprint instruction))
   t)
 
-
-(defun create-data-segment ()
-  "only for variables; numbers will use li loading rather than lw
-  If you have more than one block, you need to create .data for each block."
-  (format t "~2%.data~%")
-  (maphash #'(lambda (key val)
-	       (if (equal (sym-get-type val) 'VAR) (format t "~%~A: .word 0" (sym-get-value val))))
-	   *symtab*))
 
 (defun mk-mips (p register)
   "create li if constant or lw if not"
@@ -127,16 +120,27 @@
     (mk-mips p2 "$t0")
     (format t "~%sw $t0,~A" p1)))
 
-(defun map-to-mips (code)
-  (create-data-segment)
+(defun create-data-segment ()
+  "only for variables; numbers will use li loading rather than lw
+  If you have more than one block, you need to create .data for each block."
+  (format t "~2%.data~%")
+  (maphash #'(lambda (key val)
+	       (if (equal (sym-get-type val) 'VAR) (format t "~%~A: .word 0" (sym-get-value val))))
+	   *symtab*))
+
+(defun create-code-segment (code)
   (format t "~2%.text~2%") 
-  (format t "main:~%")
-  (dolist (instruction (second code)) ; NB. code is a grammar variable feature (code i1 i2 i3 ...)
+  (format t "main:")
+  (dolist (instruction (second code)) ; NB. code is a grammar variable feature (code (i1 i2 i3))
     (let ((itype (first instruction)))
       (cond ((equal itype '3AC) (mk-mips-3ac (rest instruction)))
 	    ((equal itype '2AC) (mk-mips-2ac (rest instruction)))
 	    ((equal itype '2COPY) (mk-mips-2copy (rest instruction)))
 	    (t (format t "unknown TAC code: ~A" instruction))))))
+
+(defun map-to-mips (code)
+  (create-data-segment) ; uses the symbol table
+  (create-code-segment code))
 
 (defun tac-to-rac (code)
   (format t  "~2%TAC code:~2%")
@@ -168,15 +172,17 @@
   (wrap (list '2copy p1 p2)))
 
 (defun newtemp ()
-  (gensym "t-"))       ; returns a new symbol prefixed t- at Lisp run-time
+  (gensym "t"))       ; returns a new symbol prefixed t at Lisp run-time
 
 ;;;; LALR data 
 
 (defparameter grammar
 '(
-  (start --> ID COLON EQLS e END  #'(lambda (ID COLON EQLS e END) (tac-to-rac (mk-code (append (var-get-code e)
-												(mk-2copy (t-get-val ID)
-													  (var-get-place e)))))))
+  (start --> ID COLON EQLS e END  #'(lambda (ID COLON EQLS e END) 
+				      (progn 
+					(mk-sym-entry (t-get-val ID))
+					(tac-to-rac (mk-code (append (var-get-code e) (mk-2copy (t-get-val ID)
+												(var-get-place e))))))))
   (e     --> e ADD te         #'(lambda (e ADD te) (let ((newplace (newtemp)))
 						     (mk-sym-entry newplace)
 						     (list (mk-place newplace)
@@ -214,6 +220,7 @@
   (f     --> LP e RP          #'(lambda (LP e RP) (identity e)))
   (f     --> SUB ID           #'(lambda (SUB ID) (let ((newplace (newtemp)))
 						   (mk-sym-entry newplace)
+						   (mk-sym-entry (t-get-val ID))
 						   (list (mk-place newplace)
 							 (mk-code (mk-2ac 'uminus newplace
 										  (t-get-val ID)))))))
