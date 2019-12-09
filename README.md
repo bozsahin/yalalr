@@ -5,7 +5,7 @@ This is an interface to <a href="http://web.science.mq.edu.au/~mjohnson/code/lal
 
 The installer can download and install (1) lalrparser.lisp, (2) a suitable Common Lisp if desired, and (3) set itself up to be used from any directory. 
 
-Just clone this repo and do <code>./run-to-complete-first-time-install</code>.
+Just clone this repo and do <code>./install</code>.
 
 What it does in Common Lisp:
 
