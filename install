@@ -6,26 +6,22 @@ yalalrdir=`pwd`
 SUDO=sudo    
 echo 'yalalr external resources install and path set up'
 echo '================================================='
-# check to see if lalr has been installed before
+# check to see if there is already a yalalr
+if [ "$YALALR_HOME" ]; then
+  echo "You have a yalalr system installed at $YALALR_HOME. Just go there and do 'git pull' for updates"
+  exit -1
+fi
+# check to see if lalr parser has been installed before
 if [ ! "$LALR_HOME" ]; then
-  read -r -p "lalrparser.lisp package is external required.\nWhere do you want to install it? " lalr
-  if [ -d "$lalr" ] && [ -w "$lalr" ]; then
-    cd $lalr
-    wget -v --no-check-certificate --backups=3 http://web.science.mq.edu.au/~mjohnson/code/lalrparser.lisp
-    lalr=`pwd`
-  else
-    echo "! $lalr: No such writable directory. Re-run this script to finish the partial install."
-    exit -1
-  fi
+  wget -v --no-check-certificate --backups=3 http://web.science.mq.edu.au/~mjohnson/code/lalrparser.lisp
+  lalr=`pwd`
 else
   echo "lalrparser.lisp found at $LALR_HOME. Using it"
   lalr=$LALR_HOME
 fi
 # check to see if a Lisp has been installed before
 if [ -x /usr/local/bin/sbcl ] || [ -x /usr/bin/sbcl ] || [ -x /usr/local/bin/ccl ] || [ -x /usr/bin/ccl ]; then
-  echo 'An installed ANSI Common Lisp is found'
-  echo '? If you do NOT want to use an existing Lisp, hit RETURN'
-  read -r -p '? What is the full path of your preferred Lisp executable? ' locallisp
+  locallisp=`which sbcl` || `which ccl`   # default is sbcl
 fi
 if [ -x "$locallisp" ]; then 
   echo 'got it.'
@@ -65,22 +61,6 @@ if [ ! "$locallisp" ]; then
 else
   echo "Using the Lisp at $locallisp for yalalr"
 fi
-# check to see if there is already a yalalr
-if [ "$YALALR_HOME" ]; then
-  echo 'You have a yalalr system installed.'
-  read -r -p "? Do you want me to stay at YALALR_HOME = $YALALR_HOME [y/n] ? " reinstall
-  if [ $reinstall ] && [ $reinstall = y ] || [ $reinstall = Y ]; then
-    echo 'Using existing system. Best to do a "git pull" there to refresh.'
-  else
-    read -r -p '? What is the new location for yalalr home ? ' newloc
-    if [ -d "$newloc" ] && [ -w "$newloc" ]; then
-      yalalrdir=$newloc
-    else
-      echo "! $newloc: Not a writable directory. Re-run this script to finish the partial install"
-      exit -1
-    fi
-  fi
-fi
 printf '%s\n' '# stuff added by yalalr installer' >> ~/.bashrc
 if [ -x /usr/local/bin/rlwrap ] || [ -x /usr/bin/rlwrap ] || [ -x /sw/bin/rlwrap ] || [ -x /sw/local/bin/rlwrap ]; then
   if [ ! "$RLWRAP" ]; then
@@ -94,10 +74,6 @@ printf '%s\n%s\n%s\n%s\n' "export YALALR_HOME=$yalalrdir" "export YALALR_LISP=$l
 printf '%s\n' '# end of stuff added by yalalr installer' >> ~/.bashrc
 printf '%s\n' '# stuff added by yalalr installer' >> ~/.bash_profile
 printf '%s\n' 'if [ -f ~/.bashrc ]; then source ~/.bashrc; fi' >> ~/.bash_profile
-if [ "$reinstall" ]; then
-  echo '! You have re-installed yalalr. Make sure its home is a git repo'
-fi
-echo '! Just do "git pull" in yalalr home for updates from now on.'
 echo 'install: completed.'
 echo 'To run, first open a fresh terminal, or logout and login. Then do'
 echo 'yalalr'
