@@ -70,3 +70,6 @@
     (with-open-file (s words :direction :input
 		       :if-does-not-exist :error)
       (parse (append (read s) (list *ENDMARKER*))))))
+
+(defmacro ic-gen (&optional (words "tokens"))
+  `(target-code ,words))
