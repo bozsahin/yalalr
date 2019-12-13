@@ -21,7 +21,6 @@ To use:
 4. <code>(target-code x)</code> to generate code for source file <code>x</code>.
 6. Use <code>(target-code-mips x)</code> if you want to generate MIPS code in <code>expr-mips</code>. This one clears
 the symbol hash table before calling <code>target-code</code>.
-7. <code>(help)</code> explains all this.
 
 
 enjoy.
