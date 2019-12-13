@@ -36,15 +36,11 @@
 	      (format t "Grammar loaded. LALR tables set.")))))
 
 (defun help ()
-  (format t "1. Setf your grammar, lexicon, lexforms in these variables,~%2. and call make-lalrparser.")
-  (format t "~%   That will create the LALR parse table.~%3. Then do (target-code '(.. source code ..)) to generate target code for source code online.")
-  (format t "~2%If you have lexically analyzed offline, and saved the result in a file <fn>,~% then just do (target-code <fn>) to generate code.")
-  (format t "~%The default filename is 'tokens'.~%Make sure your lexer returns ONE Lisp list of tokens in the file.")
-  (format t"~2%Yacc/bison/lex/flex-like workflow:~%   write a lexer, make sure it wraps the whole thing in (..), and save it in a file and do (target-code <fn>) in yalalr.~%It is basically bottom-up SDD in Lisp.")
-  (format t "~2%-To make changes in your grammar/lexicon/lexforms, repeat 1. You have to re-make.")
-  (format t "~%-Change *ENDMARKER* from ~A to anything, IF you have to." *ENDMARKER*)
-  (format t "~% Don't forget to change it in the lexicon as well if you do.")
-  (which-yalalr))
+  (format t "~%Standard workflow: put the lex analyzer in 'lexer' and your code generator in 'sdd.lisp'")
+  (format t "~%                   make sure the lexer takes fn and outputs fn.tokens wrapped in ()")
+  (format t "~%Check out README.md, and sample workflows in examples directory."))
+
+
 
 ;;; lalrparser.lisp is not publicized as a package so we need to recreate
 ;;; grammars when we have more than one. lalr-parser function will be different in each case,
