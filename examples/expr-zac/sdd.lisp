@@ -4,7 +4,6 @@
 ;;;;   (assume MOVE pops an rvalue, then an lvalue, and moves the rvalue to that lvalue in RAM)
 ;;;; -cem bozsahin
 
-;;; try with (target-code '( a |:=|  b + c * d - |(| - e + f |)|  |;|))
 
 ;; advice: never use a constant on the RHS of rules, put them in the lexicon and 
 ;;         symbolize them in lexforms

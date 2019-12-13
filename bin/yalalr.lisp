@@ -1,6 +1,6 @@
 ;;;; ============================================================================
 ;;;; ==   The interface to the LALR parser of Mark Johnson
-;;;; ==   -cem bozsahin, 2017-2018, Ankara
+;;;; ==   -cem bozsahin, 2017-2019, Ankara
 ;;;; ============================================================================
 
 (defparameter *ENDMARKER* '$) ; these are the globals of the lalrparser.lisp
@@ -8,19 +8,32 @@
 (defparameter lexforms nil)
 (defparameter lexicon nil)
 
+(defparameter *lexer* nil) ; the lexer function to call
+
 (defun which-yalalr ()
-  "yalalr, version 1.1")
+  "yalalr, version 2.0")
 
 (defun welcome()
-  (format t "~%---------------------------------------------------")
-  (format t "~%If you've got WARNINGS during loading,~%   you can ignore them.")
-  (format t "~%They are caused by the LALR parser,  ~%   which refers to functions generated at run-time.")
   (format t "~%===================================================")
-  (format t "~%Welcome to ~A" (which-yalalr))
-  (format t "~%an interface to LALR parser of Mark Johnson~% send bug reports to cem.bozsahin@gmail.com")
+  (format t "~%Welcome to ~d" (which-yalalr))
+  (format t "~%an interface to LALR parser of Mark Johnson")
   (format t "~%---------------------------------------------------")
   (format t "~%Ready.")
   (format t "~%===================================================~%"))
+
+(defmacro set-lexer (msg &optional (exec "lexer"))
+  "exec must be an executable"
+  `(progn (format t "~d~%" ,msg)
+	  (setf *lexer* ,exec)))
+
+(defmacro load-sdd (msg &optional (sdd nil))
+  "include in sdd.lisp file your LALR grammar and its SDD functions"
+  `(progn 
+     (format t "~d~%" ,msg)
+     (if ,sdd
+       (progn (load "sdd.lisp") 
+	      (make-lalrparser)
+	      (format t "Grammar loaded. LALR tables set.")))))
 
 (defun help ()
   (format t "1. Setf your grammar, lexicon, lexforms in these variables,~%2. and call make-lalrparser.")
@@ -33,7 +46,7 @@
   (format t "~% Don't forget to change it in the lexicon as well if you do.")
   (which-yalalr))
 
-;;; Unfortunately, lalrparser.lisp is not publicized as a package so we need to recreate
+;;; lalrparser.lisp is not publicized as a package so we need to recreate
 ;;; grammars when we have more than one. lalr-parser function will be different in each case,
 ;;; but parse function is the same for our purposes. We will override the definition of that function below.
 
@@ -61,15 +74,14 @@
                         (format nil "Error before ~A" words)))
     (lalr-parser #'next-input #'parse-error)))
 
-(defun target-code (&optional (words "tokens"))
-  "sticks in the end marker to lexically analyzed words, 
-  to pass on to lalrparser's overridden parse function.
-  Reads from a file if words is not a list. Default filename is 'tokens'."
-  (if (listp words)
-    (parse (append words (list *ENDMARKER*)))
-    (with-open-file (s words :direction :input
-		       :if-does-not-exist :error)
+(defun target-code (sourcecode)
+  "calls lexer, which returns sourcecode.tokens, sticks in the end marker to lexically analyzed words, 
+  to pass on to lalrparser's overridden parse function."
+  (let* ((lexout (concatenate 'string sourcecode ".tokens"))
+	 (tokens (run-program *lexer* (list sourcecode lexout) :wait t)))
+    (with-open-file (s lexout :direction :input
+		     :if-does-not-exist :error)
       (parse (append (read s) (list *ENDMARKER*))))))
 
-(defmacro ic-gen (&optional (words "tokens"))
+(defmacro ic-gen (words)
   `(target-code ,words))

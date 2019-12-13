@@ -16,11 +16,9 @@ What it does in Common Lisp:
 
 To use:
 
+0. You need a lexical analyzer called 'lexer' and syntax-directed code generator 'sdd.lisp'. These are automatically loaded when begun.
 1. <code>yalalr</code>
-2. Load an example from the repo, or your own. That should set the LALR grammar.
-3. <code>(make-lalrparser)</code>. This is required to make the LALR tables online.
-4. <code>(target-code x)</code> to generate code for <code>x</code>. If it is a tokenized list, it generates code for that.
-If it's a file, reads ONE LIST from the file and generates code for it.
+4. <code>(target-code x)</code> to generate code for <code>x</code>.
 6. Use <code>(target-code-mips x)</code> if you want to generate MIPS code in <code>expr-mips</code>. This one clears
 the symbol hash table before calling <code>target-code</code>.
 7. <code>(help)</code> explains all this.

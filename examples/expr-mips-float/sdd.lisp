@@ -50,8 +50,6 @@
   (if (or (listp input) (not outp))
     (setf *outstream* nil)
     (setf *outstream* (concatenate 'string "target_" input ".s")))
-  (format t "~%Lexical analyzer feed to parser as seen by Lisp reader:~2%~A" 
-	  (with-open-file (s input :direction :input :if-does-not-exist :error)(read s)))
   (target-code input))
 
 (defun mk-sym-entry (name)

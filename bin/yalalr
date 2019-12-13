@@ -1,2 +1,13 @@
 #!/bin/bash
-$RLWRAP $YALALR_LISP --load $LALR_HOME/lalrparser.lisp --load $YALALR_HOME/bin/yalalr.lisp --eval '(welcome)'
+# -cem bozsahin
+m1='"lexer ok"'
+m2='"SDD ok"'
+load='t'
+if [ ! -x 'lexer' ]; then
+	m1='"lexer not found or not executable. Set *lexer* manually."'
+fi
+if [ ! -f 'sdd.lisp' ]; then
+	unset load
+	m2='"No sdd.lisp found in current dir. Set SDD manually; see (help)"'
+fi
+$RLWRAP $YALALR_LISP --load $YALALR_HOME/bin/suppress-style-warnings.lisp --load $LALR_HOME/lalrparser.lisp --load $YALALR_HOME/bin/yalalr.lisp --eval '(welcome)' --eval "(set-lexer $m1)" --eval "(load-sdd $m2 $load)"

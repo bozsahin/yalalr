@@ -1,7 +1,6 @@
 ;;;; this example generates Lisp code for CCG grammar using ccglab syntax
 ;;;; -cem bozsahin
 
-; try with (target-code '(a y |:=| s |:| sp |;| b z |:=| np |:| z |;|)) using default lexer
 
 ;;; some auxiliary definitions needed by code generator
 
