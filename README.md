@@ -12,15 +12,24 @@ What it does in Common Lisp:
 1. returns unknown tokens as type ID, so the lexicon is open-ended. The return value is (ID text), where text is the token itself.
 2. provides a standard workflow for writing syntax-directed LR translation and code generation.
 3. uses <code>lalrparser.lisp</code> as is. It is not part of this repo.
-4. It can take input online or as output from a lexical analyzer.
+
 
 To use:
 
 0. You need a lexical analyzer called 'lexer' and syntax-directed code generator called 'sdd.lisp'. These are automatically loaded when begun.
 1. <code>yalalr</code>
-4. <code>(target-code x)</code> to generate code for source file <code>x</code>.
-6. Use <code>(target-code-mips x)</code> if you want to generate MIPS code in <code>expr-mips</code>. This one clears
+2. <code>(target-code x)</code> to generate code for source file <code>x</code>.
+3. Use <code>(target-code-mips x)</code> if you want to generate MIPS code in <code>expr-mips</code>. This one clears
 the symbol hash table before calling <code>target-code</code>.
+
+You will get a warning in the beginning if the <code>lexer</code> or the <code>sdd.lisp</code> files do not exist.
+You get the same warning if lexer is not an executable. You can set them manually as follows:
+
+a. set the <code>*lexer*</code> Lisp variable to your lexer binary. Make sure it follows the same i/o convention of
+reading the characters from a file <code>fn</code> and writing the tokens to <code>fn.tokens</code> wrapped in (..).
+b. set the <code>grammar, lexicon, lexforms</code> variables of <code>lalrparser.lisp</code> as you see fit.
+c. do <code>(make-lalrparser)</code>. Now LALR tables are set. You are at step 2 above.
+
 
 
 enjoy.
