@@ -16,7 +16,7 @@ What it does in Common Lisp:
 
 To use:
 
-0. You need a lexical analyzer called <code>lexer</code> and syntax-directed code generator called <code>sdd.lisp</code>. These are automatically loaded when begun.
+0. In your current directory, you need a lexical analyzer called <code>lexer</code> and syntax-directed code generator called <code>sdd.lisp</code>. These are automatically loaded when begun. Do:
 1. <code>yalalr</code>  from the command line. Once you are in and everthing is ok:
 2. <code>(target-code x)</code> to generate code for source file <code>x</code>.
 3. Use <code>(target-code-mips x)</code> if you want to generate MIPS code in <code>expr-mips</code>. This one clears
