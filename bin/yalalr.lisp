@@ -33,7 +33,7 @@
      (if ,sdd
        (progn (load "sdd.lisp") 
 	      (make-lalrparser)
-	      (format t "Grammar loaded. LALR tables set.")))))
+	      (format t "SDD loaded.~%LALR tables set.~%")))))
 
 (defun help ()
   (format t "~%-put the lex analyzer in 'lexer' and your code generator in 'sdd.lisp'")
