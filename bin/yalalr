@@ -4,10 +4,10 @@ m1='"lexer ok"'
 m2='"SDD ok"'
 load='t'
 if [ ! -x 'lexer' ]; then
-	m1='"lexer not found in current directory or not executable. Set *lexer* manually."'
+	m1='"*** lexer not found in current directory or not executable. Set *lexer* manually."'
 fi
 if [ ! -f 'sdd.lisp' ]; then
 	unset load
-	m2='"sdd.lisp not found in current directory. Set SDD manually; see (help)"'
+	m2='"*** sdd.lisp not found in current directory. Set SDD manually."'
 fi
-$RLWRAP $YALALR_LISP --load $YALALR_HOME/bin/suppress-style-warnings.lisp --load $LALR_HOME/lalrparser.lisp --load $YALALR_HOME/bin/yalalr.lisp --eval '(welcome)' --eval "(set-lexer $m1)" --eval "(load-sdd $m2 $load)"
+$RLWRAP $YALALR_LISP --load $YALALR_HOME/bin/suppress-style-warnings.lisp --load $LALR_HOME/lalrparser.lisp --load $YALALR_HOME/bin/yalalr.lisp --eval '(welcome)' --eval "(set-lexer $m1)" --eval "(load-sdd $m2 $load)" --eval '(format t "Check out README.md for standard work flow and manual workflow~%(help) reminds the workflow")'

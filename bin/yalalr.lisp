@@ -36,9 +36,10 @@
 	      (format t "Grammar loaded. LALR tables set.")))))
 
 (defun help ()
-  (format t "~%Standard workflow: put the lex analyzer in 'lexer' and your code generator in 'sdd.lisp'")
-  (format t "~%                   make sure the lexer takes fn and outputs fn.tokens wrapped in ()")
-  (format t "~%Check out README.md, and sample workflows in examples directory."))
+  (format t "~%-put the lex analyzer in 'lexer' and your code generator in 'sdd.lisp'")
+  (format t "~%-make sure the lexer takes fn as input and outputs fn.tokens wrapped in ()")
+  (format t "~%-Call 'target-code' or 'ic-gen'")
+  (format t "~2%Check out README.md, and sample workflows in examples directory."))
 
 
 
