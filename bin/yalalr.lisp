@@ -37,8 +37,11 @@
 
 (defun help ()
   (format t "~%-put the lex analyzer in 'lexer' and your code generator in 'sdd.lisp'")
-  (format t "~%-make sure the lexer takes fn as input and outputs fn.tokens wrapped in ()")
-  (format t "~%-Call 'target-code' or 'ic-gen'")
+  (format t "~%-make sure the lexer takes a source file (say f) as input and outputs f.tokens wrapped in ()")
+  (format t "~%-LALR's ACTION and GOTO tables are automatically generated when you load sdd.lisp")
+  (format t "~%   if you update your grammar, you need to remake the tables. Use (make-lalrparser)")
+  (format t "~%   or just exit yalalr and run it again.")
+  (format t "~%-Call 'target-code' or 'ic-gen' with source code file to generate target code or IC")
   (format t "~2%Check out README.md, and sample workflows in examples directory."))
 
 
