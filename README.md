@@ -21,10 +21,10 @@ To use:
 
 <li> <code>yalalr</code>  from the command line. Once you are in and everthing is ok:
 
-<li> <code>(target-code x)</code> to generate code for source file <code>x</code>. Alternatively you can call <code>ic-gen</code>
+<li> <code>(target-code "x")</code> to generate code for source file <code>x</code>. Alternatively you can call <code>ic-gen</code>
 for IC generation. They call the lexer to obtain <code>x.tokens</code>, then generate code.
 
-<p> Use <code>(target-code-mips x)</code> if you want to generate MIPS code in <code>expr-mips</code>. This one clears
+<p> Use <code>(target-code-mips "x")</code> if you want to generate MIPS code in <code>expr-mips</code>. This one clears
 the symbol hash table before calling <code>target-code</code>.
  </ol>
 <hr>
