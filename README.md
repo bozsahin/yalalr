@@ -7,9 +7,9 @@ The installer can download and install (1) lalrparser.lisp, (2) a suitable Commo
 
 Just clone this repo and do <code>./install</code>.
 
-What it does in Common Lisp:
+Some features of <code>yalalr</code>:
 
-1. returns unknown tokens as type ID, so the lexicon is open-ended. The return value is (ID text), where text is the token itself.
+1. returns unknown tokens <code>x</code> with type ID, as <code>(ID x)</code>, so the lexicon is open-ended. 
 2. provides a standard workflow for writing syntax-directed LR translation and code generation, using <code>(make-lalrparser)</code>
 3. uses <code>lalrparser.lisp</code> as is. It is not part of this repo.
 
